@@ -1,6 +1,6 @@
 #include "../include/Trie.h"
 
-Trie::Trie(): root(new node()) {};
+Trie::Trie(): root(new node()), size(0) {};
 
 Trie::~Trie(){
 	clear();
@@ -17,7 +17,7 @@ void Trie::insert(string s, string val){
 
 		if(j == m){
 			if(i == n){
-				if(cur->end == nullptr) cur->end = new node(val), cur->end->par = cur;
+				if(cur->end == nullptr) cur->end = new node(val), cur->end->par = cur, size++;
 				else cur->end->t = val;
 			}
 			else if(s[i] == '0'){

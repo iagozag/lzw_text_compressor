@@ -18,6 +18,7 @@ class Trie {
 		};
 
 		node* root;
+		int size;
 
 	public:
 		Trie();
