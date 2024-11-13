@@ -8,12 +8,12 @@ using namespace std;
 class Trie {
 	private:
 		struct node{
-			string t, value;
+			string t;
 			node* l;
 			node* r;
 			node* end;
 
-			node(string _t = "", string _value = ""): t(_t), value(_value), l(nullptr), r(nullptr), end(nullptr){}
+			node(string _t = ""): t(_t), l(nullptr), r(nullptr), end(nullptr){}
 		};
 
 		node* root;
@@ -23,7 +23,7 @@ class Trie {
 		~Trie();
 		void insert(string s, string);
 		void erase(string s);
-		void find(string s);
+		string find(string s);
 };
 
 #endif
