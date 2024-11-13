@@ -6,9 +6,9 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define endl '\n'
 
-int main(){ _
+int main(){ 
 	Trie t;	
-	/*
+
 	t.insert("001", "1");
 	t.insert("011", "2");
 	t.insert("1", "3");
@@ -21,7 +21,14 @@ int main(){ _
 			t.find("1") << endl <<
 			t.find("10") << endl <<
 			t.find("11") << endl;
-	*/
+
+	t.insert("11", "5");
+	cout << t.find("11") << endl;
+
+	t.erase("11");
+
+	t.insert("11", "6");
+	cout << t.find("11") << endl;
 
     exit(0);
 }
