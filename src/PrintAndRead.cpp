@@ -9,7 +9,7 @@ void Print::add_bits(char c, int n) {
 }
 
 void Print::add_bits(string s,int z) {
-    while(z--) buf.push_back(false);
+    while(z>0) buf.push_back(false),z--;
     for(auto c:s) buf.push_back(c=='1');
 }
 
@@ -22,7 +22,7 @@ void Print::print(ofstream &f, int n) {
         i--;
         c|=(b<<i);
         if(not i) {
-            f << c;
+            f.write(&c,1);
             i = 8;
             c = 0;
         }

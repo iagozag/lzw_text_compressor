@@ -1,69 +1,92 @@
 #include <algorithm>
+#include <stdexcept>
 #include <fstream>
 #include <iostream>
-#include <map>
+#include <set>
 
 #include "../include/Lzw.h"
+#include "../include/PrintAndRead.h"
 
-Lzw::Lzw(string _file,int _max_bits, bool _stats, bool _fixed):
-         file(_file), max_bits(_max_bits), stats(_stats), fixed(_fixed) {
-    
-    ifstream f(file);
-    if (not f.good()) {
-        cerr << "Erro ao encontrar o arquivo.\n";
-        exit(1);
-    } else f.close();
-
-    char c=0;
-    do {
-        string s = char_to_bin(c);
-        t.insert(s,int_to_bin(t.get_size()));
-        c++;
-    } while (c!=0);
-}
+Lzw::Lzw(int _max_bits, bool _fixed): max_bits(_max_bits), min_bits(9), fixed(_fixed) {}
 
 Lzw::~Lzw() {}
 
+void Lzw::reset_dict() {
+    num_bits=min_bits;
+    t.clear();
+    set<string> s;
+    for(int i=0;i<=255;i++) {
+        // string v = t.find(char_to_bin(c));
+        // if(v.size()) cout << v << endl;
+        t.insert(char_to_bin(i),int_to_bin(t.get_size()));
+        s.insert(char_to_bin(i));
+        // if(t.get_size()==x) cout << "erro: char " << (char)c << ", string: " << char_to_bin(c) << endl;
+    }
+    cout << "tamanho da trie: " << t.get_size() << endl;
+    cout << "tamanho do set: " << s.size() << endl;
+    exit(1);
+}
+
 string Lzw::char_to_bin(char c) {
-    string r(8,',');
+    string r(8,'0');
     for(int i=0;i<8;i++) r[i] = '0' + (((c>>i)&1)==1);
     return r;
 }
 
 string Lzw::int_to_bin(int n) {
-    string r;
-    do {
-        r.push_back('0'+((n&1)==1));
-        n>>=1;
-    } while (n);
+    string r(num_bits,'0');
+    for(int i=0;i<num_bits;i++) r[i] += ((n>>i)&1)==1;
     reverse(r.begin(),r.end());
     return r;
 }
 
-void Lzw::compress() {
+void Lzw::compress(string file) {
+    ifstream in(file, ios::binary);
+    if(not in.good()) throw invalid_argument("Error: file not found");
+
+    reset_dict();
     string s,sb;
+    Print p;
+    
     char c;
-    cout << t.get_size() << endl;
-    ifstream in(file, ios::binary);    
-    // ofstream out(file+".lzw",ios::out);
-    while(in.get(c)) {
+    vector<string> buf;
+    ofstream out(file+".lzw", ios::binary);
+
+    while(in.read(&c,1)) {
         sb=char_to_bin(c);
         s=s+sb;
-        cout << s << endl;
-        string v = t.find(s);
-        if(v.size()) continue; // já tá no dicionário
 
-        // não tá no dicionário
+        string v = t.find(s);
+       if(v.size()) continue;
+
+        if((int)t.get_size()>=(1<<num_bits)) {
+            if(num_bits==max_bits) {
+                for(int j=0;j<8;j++) s.pop_back();
+                buf.push_back(t.find(s));
+
+                for(auto &ss: buf) 
+                    p.add_bits(ss,num_bits-((int)ss.size()));
+
+                p.print(out,num_bits);
+                buf.clear();
+                reset_dict();
+                t.insert(s+sb,int_to_bin(t.get_size()));
+                s = sb;
+                continue;
+            } else num_bits++;
+        }
+
         t.insert(s,int_to_bin(t.get_size()));
 
         for(int j=0;j<8;j++) s.pop_back();
-        cout << "s: " << t.find(s) << endl;
+        buf.push_back(t.find(s));
         s = sb;
     }
-    cout << t.find(s) << endl;
+    for(auto ss:buf) p.add_bits(ss,num_bits-ss.size());
+    p.add_bits(t.find(s),num_bits-t.find(s).size());
+    p.print(out, num_bits);
 
     in.close();
-        // cout << ' ' << s << ' ' <<  "testeeee\n";
-    // out.close();
+    out.close();
 }
 
