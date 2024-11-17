@@ -39,7 +39,7 @@ void Lzw::compress(string file) {
     reset_dict();
     string s,sb;
     Print p;
-    
+
     char c;
     vector<string> buf;
     ofstream out(file+".lzw", ios::binary);

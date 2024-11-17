@@ -7,7 +7,7 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define endl '\n'
 
-int main(int argc, char* argv[]){ 
+int main(int argc, char* argv[]){ _
 	if (argc < 2) {
 		cout << "How to use: ./main <file> [--max-bits <value> (12 by default)] [--stats (0 by default)]" << endl;
 		exit(0);
@@ -24,7 +24,6 @@ int main(int argc, char* argv[]){
         else if(arg == "--stats") stats = 1;
     }
 
-	Trie t;
 	Lzw l(max_bits, stats);
 	l.compress(file);
 
