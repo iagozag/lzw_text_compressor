@@ -1,10 +1,14 @@
 #include "../include/Trie.h"
 
-Trie::Trie(): root(new node()), size(0) {};
+Trie::Trie(): root(new node()), sz(0) {};
 
 Trie::~Trie(){
 	clear();
 	delete root;
+}
+
+int Trie::size(){
+	return sz;
 }
 
 void Trie::insert(string s, string val){
@@ -17,7 +21,7 @@ void Trie::insert(string s, string val){
 
 		if(j == m){
 			if(i == n){
-				if(cur->end == nullptr) cur->end = new node(val), cur->end->par = cur, size++;
+				if(cur->end == nullptr) cur->end = new node(val), cur->end->par = cur, sz++;
 				else cur->end->t = val;
 			}
 			else if(s[i] == '0'){
@@ -35,15 +39,14 @@ void Trie::insert(string s, string val){
 			else cur->par->r = new_par;
 
 			cur->t = cur->t.substr(j, m-j);
+			cur->par = new_par;
 
 			if(s[i] == '0'){
 				new_par->l = new node(s.substr(i, n-i));
-				new_par->l->par = new_par;
 				new_par->r = cur;
 				cur = new_par->l;
 			} else{
 				new_par->r = new node(s.substr(i, n-i));
-				new_par->r->par = new_par;
 				new_par->l = cur;
 				cur = new_par->r;
 			}

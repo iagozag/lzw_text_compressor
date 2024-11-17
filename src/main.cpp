@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Trie.h"
+#include "../include/Lzw.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ int main(int argc, char* argv[]){
 		exit(0);
 	}
 
-	string file = "../inputs/";
+	string file = "inputs/";
 	file += argv[1];
 	int max_bits = 12; 
 	bool stats = 0;
@@ -23,32 +24,9 @@ int main(int argc, char* argv[]){
         else if(arg == "--stats") stats = 1;
     }
 
-	cout << file << " " << max_bits << " " << stats << endl;
-
-	/*
-	Trie t;	
-
-	t.insert("001", "1");
-	t.insert("011", "2");
-	t.insert("1", "3");
-	t.insert("11", "4");
-
-	cout << t.find("001") << endl << 
-			t.find("011") << endl << 
-			t.find("0") << endl <<
-			t.find("000") << endl <<
-			t.find("1") << endl <<
-			t.find("10") << endl <<
-			t.find("11") << endl;
-
-	t.insert("11", "5");
-	cout << t.find("11") << endl;
-
-	t.erase("11");
-
-	t.insert("11", "6");
-	cout << t.find("11") << endl;
-	*/
+	Trie t;
+	Lzw l(max_bits, stats);
+	l.compress(file);
 
     exit(0);
 }

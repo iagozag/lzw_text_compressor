@@ -7,24 +7,16 @@
 #include "../include/Lzw.h"
 #include "../include/PrintAndRead.h"
 
-Lzw::Lzw(int _max_bits, bool _fixed): max_bits(_max_bits), min_bits(9), fixed(_fixed) {}
+Lzw::Lzw(int _max_bits, bool _stats, bool _fixed): max_bits(_max_bits), min_bits(9), stats(_stats), fixed(_fixed) {}
 
 Lzw::~Lzw() {}
 
 void Lzw::reset_dict() {
     num_bits=min_bits;
     t.clear();
-    set<string> s;
     for(int i=0;i<=255;i++) {
-        // string v = t.find(char_to_bin(c));
-        // if(v.size()) cout << v << endl;
-        t.insert(char_to_bin(i),int_to_bin(t.get_size()));
-        s.insert(char_to_bin(i));
-        // if(t.get_size()==x) cout << "erro: char " << (char)c << ", string: " << char_to_bin(c) << endl;
+        t.insert(char_to_bin(i),int_to_bin(t.size()));
     }
-    cout << "tamanho da trie: " << t.get_size() << endl;
-    cout << "tamanho do set: " << s.size() << endl;
-    exit(1);
 }
 
 string Lzw::char_to_bin(char c) {
@@ -57,9 +49,9 @@ void Lzw::compress(string file) {
         s=s+sb;
 
         string v = t.find(s);
-       if(v.size()) continue;
+       	if(v.size()) continue;
 
-        if((int)t.get_size()>=(1<<num_bits)) {
+        if((int)t.size()>=(1<<num_bits)) {
             if(num_bits==max_bits) {
                 for(int j=0;j<8;j++) s.pop_back();
                 buf.push_back(t.find(s));
@@ -70,13 +62,13 @@ void Lzw::compress(string file) {
                 p.print(out,num_bits);
                 buf.clear();
                 reset_dict();
-                t.insert(s+sb,int_to_bin(t.get_size()));
+                t.insert(s+sb,int_to_bin(t.size()));
                 s = sb;
                 continue;
             } else num_bits++;
         }
 
-        t.insert(s,int_to_bin(t.get_size()));
+        t.insert(s,int_to_bin(t.size()));
 
         for(int j=0;j<8;j++) s.pop_back();
         buf.push_back(t.find(s));

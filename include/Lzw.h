@@ -10,6 +10,7 @@ class Lzw {
         int max_bits;
         int min_bits;
         int num_bits;
+		bool stats;
         bool fixed;
 
         /*
@@ -18,7 +19,7 @@ class Lzw {
         void reset_dict();
 
     public:
-        Lzw(int _max_bits=12, bool _fixed = false);
+        Lzw(int _max_bits=12, bool stats = false, bool _fixed = false);
         ~Lzw();
         /*
          * @brief Returns a binary string that represents the binary representation of c

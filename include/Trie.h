@@ -18,11 +18,12 @@ class Trie {
 		};
 
 		node* root;
-		int size;
+		int sz;
 
 	public:
 		Trie();
 		~Trie();
+		int size();
 		void insert(string, string);
 		void erase(string);
 		string find(string);
