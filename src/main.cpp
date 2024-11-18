@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../include/Trie.h"
 #include "../include/Lzw.h"
+#include<map>
 
 using namespace std;
 

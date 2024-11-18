@@ -1,120 +1,112 @@
 #include "../include/Trie.h"
 
-Trie::Trie(): root(new node()), sz(0) {};
+Trie::Trie(): sz(0), idx(1) { nodes.emplace_back(); }
 
 Trie::~Trie(){
-	clear();
-	delete root;
+	nodes.clear();
 }
 
 int Trie::size(){
 	return sz;
 }
 
+int Trie::create(string _t = "", string _v = ""){
+	nodes.emplace_back(_t, _v);
+	return idx++;
+}
+
 void Trie::insert(string s, string val){
 	int i = 0, n = s.size();
-	node* cur = root;
+	int cur = 0;
 	while(i < n){
-		int j = 0, m = cur->t.size();
-		while(j < m and i < n and cur->t[j] == s[i])
+		int j = 0, m = nodes[cur].t.size();
+		while(j < m and i < n and nodes[cur].t[j] == s[i])
 			i++, j++;
 
 		if(j == m){
 			if(i == n){
-				if(cur->end == nullptr) cur->end = new node(val), cur->end->par = cur, sz++;
-				else cur->end->t = val;
+				if(nodes[cur].end == false) nodes[cur].end = true, nodes[cur].v = val, sz++;
+				else nodes[cur].v = val;
 			}
 			else if(s[i] == '0'){
-				if(cur->l == nullptr) cur->l = new node(s.substr(i, n-i)), cur->l->par = cur;
-				cur = cur->l;
+				if(nodes[cur].l == -1) nodes[cur].l = create(s.substr(i, n-i)), nodes[nodes[cur].l].par = cur;
+				cur = nodes[cur].l;
 			} else{
-				if(cur->r == nullptr) cur->r = new node(s.substr(i, n-i)), cur->r->par = cur;
-				cur = cur->r;
+				if(nodes[cur].r == -1) nodes[cur].r = create(s.substr(i, n-i)), nodes[nodes[cur].r].par = cur;
+				cur = nodes[cur].r;
 			}
 		} else{
-			node* new_par = new node(cur->t.substr(0, j));
-			new_par->par = cur->par;
+			int new_par = create(nodes[cur].t.substr(0, j));
+			nodes[new_par].par = nodes[cur].par;
 
-			if(cur->t[0] == '0') cur->par->l = new_par;
-			else cur->par->r = new_par;
+			if(nodes[cur].t[0] == '0') nodes[nodes[cur].par].l = new_par;
+			else nodes[nodes[cur].par].r = new_par;
 
-			cur->t = cur->t.substr(j, m-j);
-			cur->par = new_par;
+			nodes[cur].t = nodes[cur].t.substr(j, m-j);
+			nodes[cur].par = new_par;
 
 			if(s[i] == '0'){
-				new_par->l = new node(s.substr(i, n-i));
-				new_par->r = cur;
-				cur = new_par->l;
+				nodes[new_par].l = create(s.substr(i, n-i));
+				nodes[new_par].r = cur;
+				cur = nodes[new_par].l;
 			} else{
-				new_par->r = new node(s.substr(i, n-i));
-				new_par->l = cur;
-				cur = new_par->r;
+				nodes[new_par].r = create(s.substr(i, n-i));
+				nodes[new_par].l = cur;
+				cur = nodes[new_par].r;
 			}
 
-			cur->par = new_par;
+			nodes[cur].par = new_par;
 		}
 	}
 }
 
 void Trie::erase(string s){
 	int i = 0, n = s.size();
-	node* cur = root;
+	int cur = 0;
 	while(i < n){
-		int j = 0, m = cur->t.size();
-		while(j < m and i < n and cur->t[j] == s[i])
+		int j = 0, m = nodes[cur].t.size();
+		while(j < m and i < n and nodes[cur].t[j] == s[i])
 			i++, j++;
 
 		if(j != m) return;
 
 		if(i == n){
-			if(cur->end == nullptr) return;
-			cur = cur->end;
+			if(nodes[cur].end == false) return;
 		}
-		else if(s[i] == '0' and cur->l != nullptr) cur = cur->l;
-		else if(s[i] == '1' and cur->r != nullptr) cur = cur->r;
+		else if(s[i] == '0' and nodes[cur].l != -1) cur = nodes[cur].l;
+		else if(s[i] == '1' and nodes[cur].r != -1) cur = nodes[cur].r;
 		else return;
 	}
 
-	node* tmp;
-	while(cur != root and cur->l == nullptr and cur->r == nullptr and cur->end == nullptr){
-		tmp = cur;
-		cur = cur->par;
-
-		if(cur->l == tmp) cur->l = nullptr;
-		if(cur->r == tmp) cur->r = nullptr;
-		if(cur->end == tmp) cur->end = nullptr;
-
-		delete tmp;
+	nodes[cur].end = false, nodes[cur].v = "", sz--;
+	while(cur and nodes[cur].l == -1 and nodes[cur].r == -1 and nodes[cur].end == false){
+		int tmp = cur;
+		cur = nodes[cur].par;
+		if(nodes[cur].l == tmp) nodes[cur].l = -1;
+		if(nodes[cur].r == tmp) nodes[cur].r = -1;
 	}
 }
 
 string Trie::find(string s){
 	int i = 0, n = s.size();
-	node* cur = root;
+	int cur = 0;
 	while(i < n){
-		int j = 0, m = cur->t.size();
-		while(j < m and i < n and cur->t[j] == s[i])
+		int j = 0, m = nodes[cur].t.size();
+		while(j < m and i < n and nodes[cur].t[j] == s[i])
 			i++, j++;
 
 		if(j != m) break;
 
-		if(i == n) return (cur->end == nullptr ? "" : cur->end->t);
-		else if(s[i] == '0' and cur->l != nullptr) cur = cur->l;
-		else if(s[i] == '1' and cur->r != nullptr) cur = cur->r;
+		if(i == n) return (nodes[cur].end == false ? "" : nodes[cur].v);
+		else if(s[i] == '0' and nodes[cur].l != -1) cur = nodes[cur].l;
+		else if(s[i] == '1' and nodes[cur].r != -1) cur = nodes[cur].r;
 		else break;
 	}
 	return "";
 }
 
-void Trie::clear(node* cur){
-	if(cur->l != nullptr) clear(cur->l);
-	if(cur->r != nullptr) clear(cur->r);
-	if(cur->end != nullptr) delete cur->end, cur->end = nullptr;
-
-	delete cur;
-}
-
 void Trie::clear(){
-	clear(root);
-	root = new node();
+	nodes.clear();
+    nodes.emplace_back();
+	sz = 0, idx = 1;
 }

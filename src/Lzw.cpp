@@ -2,12 +2,11 @@
 #include <stdexcept>
 #include <fstream>
 #include <iostream>
-#include <set>
 
 #include "../include/Lzw.h"
 #include "../include/PrintAndRead.h"
 
-Lzw::Lzw(int _max_bits, bool _stats, bool _fixed): max_bits(_max_bits), min_bits(9), stats(_stats), fixed(_fixed) {}
+Lzw::Lzw(int _max_bits, bool _stats, bool _fixed): max_bits(_max_bits), min_bits(9), num_bits(9), stats(_stats), fixed(_fixed) {}
 
 Lzw::~Lzw() {}
 

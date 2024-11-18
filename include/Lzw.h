@@ -1,6 +1,8 @@
 #ifndef LZW_H
 #define LZW_H
 
+using namespace std;
+
 #include "Trie.h"
 
 class Lzw {

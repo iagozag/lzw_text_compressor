@@ -2,6 +2,7 @@
 #define TRIE_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -9,16 +10,20 @@ class Trie {
 	private:
 		struct node{
 			string t;
-			node* l;
-			node* r;
-			node* par;
-			node* end;
+			string v;
+			int l;
+			int r;
+			int par;
+			bool end;
 
-			node(string _t = ""): t(_t), l(nullptr), r(nullptr), end(nullptr) {}
+			node(string _t = "", string _v = ""): t(_t), v(_v), l(-1), r(-1), end(false) {}
 		};
 
-		node* root;
+		vector<node> nodes;
 		int sz;
+		int idx;
+
+		int create(string, string);
 
 	public:
 		Trie();
@@ -27,7 +32,6 @@ class Trie {
 		void insert(string, string);
 		void erase(string);
 		string find(string);
-		void clear(node*);
 		void clear();
 };
 
