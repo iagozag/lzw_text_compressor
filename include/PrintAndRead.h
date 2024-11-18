@@ -24,9 +24,14 @@ class Print {
         void add_bits(string s, int z=0);
 
         /*
-         * @brief Prints all the bits of the vector (its size and elements) and then the buffer
+         * @brief Prints an int, and then all the bits of the buffer
          */
         void print(ofstream &f, int n);
+
+        /*
+         * @brief Prints all the bits of the buffer
+         */
+        void print(ofstream &f);
 };
 
 
