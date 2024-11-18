@@ -1,14 +1,13 @@
 #ifndef LZW_H
 #define LZW_H
 
-using namespace std;
-
 #include "Trie.h"
+#include <map>
 
 class Lzw {
     private:
         Trie t;
-        // map<string,string> m;
+        // map<string,string> t;
         int max_bits;
         int min_bits;
         int num_bits;
@@ -19,6 +18,8 @@ class Lzw {
          * @brief Resets the dictionary
          */
         void reset_dict();
+
+        void reset_dict2();
 
     public:
         Lzw(int _max_bits=12, bool stats = false, bool _fixed = false);
@@ -33,12 +34,15 @@ class Lzw {
          */
         string int_to_bin(int n);
 
-
         /*
          * @brief Runs the LZW algorithm on the file with the name given as argument
          */
         void compress(string file);
         
+        /*
+         * @brief Runs the LZW algorithm on the compressed file to get back the original file
+         */
+        void decompress(string file);
 };
 
 
