@@ -146,7 +146,9 @@ void Lzw::decompress(string file) {
 
         if(t.find(code).size()) entry = t.find(code);
         else entry = str+str.substr(0,8);
+        
         p.add_bits(entry);
+        if(t.size()>=(1<<num_bits)) reset_dict2();
         t.insert(int_to_bin(t.size()), str+entry.substr(0,8));
         str = entry;
     }
