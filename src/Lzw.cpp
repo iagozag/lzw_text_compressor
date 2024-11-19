@@ -157,15 +157,21 @@ void Lzw::decompress(string file) {
     out.close();
 }   
 
-void Lzw::print_stats(bool c, long long time_taken) {
-    if(c){
-        cout << "Input File Size: " << input_file_size << " bytes" << endl;
-        cout << "Time taken: " << time_taken << " ms" << endl;
-        cout << "Compressed File Size: " << output_file_size << " bytes" << endl;
-        cout << "Compression Ratio: " << 100.0-(100.0 * output_file_size / input_file_size) << "%" << endl;
-        cout << "Number of Dictionary Resets: " << dictionary_resets << endl;
-    } else{
-        cout << "Time taken: " << time_taken << " ms" << endl;
-        cout << "Number of Dictionary Resets: " << dictionary_resets << endl;
+void Lzw::print_stats(bool compress, long long time_taken, string stats_file_path) {
+    std::ofstream stats_file("stats/"+stats_file_path+".stats");
+
+    if (compress) {
+        stats_file << "Input File Size: " << input_file_size << " bytes" << endl;
+        stats_file << "Time taken: " << time_taken << " ms" << endl;
+        stats_file << "Compressed File Size: " << output_file_size << " bytes" << endl;
+        stats_file << "Compression Ratio: " << 100.0 - (100.0 * output_file_size / input_file_size) << "%" << endl;
+        stats_file << "Number of Dictionary Resets: " << dictionary_resets << endl;
+    } else {
+        stats_file << "Time taken: " << time_taken << " ms" << endl;
+        stats_file << "Number of Dictionary Resets: " << dictionary_resets << endl;
     }
+
+    stats_file.close();
+
+    std::cout << "Statistics saved to " << "stats/"+stats_file_path+".stats" << std::endl;
 }

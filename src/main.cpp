@@ -33,6 +33,6 @@ int main(int argc, char* argv[]){
 
     auto end = chrono::high_resolution_clock::now();
 
-	if(stats) l.print_stats(comp, chrono::duration_cast<chrono::milliseconds>(end - start).count());
+	if(stats) l.print_stats(comp, chrono::duration_cast<chrono::milliseconds>(end - start).count(), file);
     exit(0);
 }

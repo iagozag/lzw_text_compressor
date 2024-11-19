@@ -48,7 +48,7 @@ class Lzw {
          */
         void decompress(string file);
 
-        void print_stats(bool, long long);
+        void print_stats(bool, long long, string);
 };
 
 
