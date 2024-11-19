@@ -6,10 +6,6 @@ Print::Print() {}
 
 Print::~Print() {}
 
-void Print::add_bits(char c, int n) {
-    while(n--) buf.push_back(c&1), c>>=1;
-}
-
 void Print::add_bits(string s,int z) {
     while(z>0) buf.push_back(false),z--;
     for(auto c:s) buf.push_back(c=='1');
@@ -56,10 +52,11 @@ void Print::print(ofstream &f) {
     f.write(&s[0],s.size());
 }
 void Read(ifstream &f, vector<string> &codes) {
+    codes.clear();
     int n=0;
     f.read((char*)&n,4);
     if(not n) return;
-    int sz;
+    int sz=0;
     f.read((char*)&sz,4);
     char str[sz];
     char c;
@@ -75,5 +72,9 @@ void Read(ifstream &f, vector<string> &codes) {
             }
             s.push_back('0'+((c&(1<<i))!=0));
         }
+    }
+    if((int)s.size()==n) {
+        codes.push_back(s);
+        s.clear();
     }
 }

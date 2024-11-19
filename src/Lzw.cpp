@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <stdexcept>
 
 #include "../include/Lzw.h"
@@ -49,13 +48,12 @@ void Lzw::compress(string file) {
     ofstream out("outputs/"+file+".lzw", ios::binary);
 
     reset_dict();
-    string s,sb;
     Print p;
     char c;
+    string s,sb;
     vector<string> buf;
-    char str[1025];
+    char str[1024];
     long n=0,i=0;
-
     while(1) {
         if(n==i) {
             in.read(str,1024);
@@ -70,19 +68,20 @@ void Lzw::compress(string file) {
         s=s+sb;
 
         string v = t.find(s);
-        if(v.size()) continue;
+        if(v.size()>0) continue;
 
         if((int)t.size()>=(1<<num_bits)) {
             if(num_bits>=max_bits) {
                 for(int j=0;j<8;j++) s.pop_back();
-                buf.push_back(v);
+                buf.push_back(t.find(s));
                 for(auto &ss: buf) 
                     p.add_bits(ss,num_bits-((int)ss.size()));
 
                 p.print(out,num_bits);
                 buf.clear();
                 reset_dict();
-                t.insert(s+sb,int_to_bin(t.size()));
+                s+=sb;
+                t.insert(s,int_to_bin(t.size()));
                 s = sb;
                 continue;
             } else num_bits++;
@@ -91,7 +90,7 @@ void Lzw::compress(string file) {
         t.insert(s,int_to_bin(t.size()));
 
         for(int j=0;j<8;j++) s.pop_back();
-        buf.push_back(v);
+        buf.push_back(t.find(s));
         s = sb;
     }
 
@@ -104,8 +103,8 @@ void Lzw::compress(string file) {
 }
 
 void Lzw::decompress(string file) {
-    ifstream in("inputs/"+file+".lzw", ios::binary);
-    ofstream out("inputs/teste"+file, ios::binary);
+    ifstream in("outputs/"+file+".lzw", ios::binary);
+    ofstream out("inputs/"+file, ios::binary); // maybe change folder/file name
     if(not in.good()) throw invalid_argument("Error: file not found");
 
     vector<string> buf;
@@ -139,7 +138,6 @@ void Lzw::decompress(string file) {
         if(t.find(code).size()) entry = t.find(code);
         else entry = str+str.substr(0,8);
         p.add_bits(entry);
-        if(t.size()>=(1<<num_bits)) reset_dict2();
         t.insert(int_to_bin(t.size()), str+entry.substr(0,8));
         str = entry;
     }

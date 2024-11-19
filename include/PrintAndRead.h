@@ -13,10 +13,6 @@ class Print {
     public:
         Print();
         ~Print();
-        /*
-         * @brief Adds n bits of char to the buffer to be written to the output
-         */
-        void add_bits(char c, int n=8);
 
         /*
          * @brief Adds all the digits of the binary string to the buffer to be written to the output
