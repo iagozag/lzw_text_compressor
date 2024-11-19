@@ -25,8 +25,14 @@ int main(int argc, char* argv[]){
     }
 
 	Lzw l(max_bits, stats, fixed);
+
+	auto start = chrono::high_resolution_clock::now();
+
 	if(comp) l.compress(file);
 	else l.decompress(file);
 
+    auto end = chrono::high_resolution_clock::now();
+
+	if(stats) l.print_stats(comp, chrono::duration_cast<chrono::milliseconds>(end - start).count());
     exit(0);
 }

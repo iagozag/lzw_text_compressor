@@ -5,7 +5,8 @@
 #include "../include/Lzw.h"
 #include "../include/PrintAndRead.h"
 
-Lzw::Lzw(int _max_bits, bool _stats, bool _fixed): max_bits(_max_bits), min_bits(9), stats(_stats), fixed(_fixed) {}
+Lzw::Lzw(int _max_bits, bool _stats, bool _fixed): max_bits(_max_bits), min_bits(9), input_file_size(0), output_file_size(0), 
+                                                   dictionary_resets(0), stats(_stats), fixed(_fixed) {}
 
 Lzw::~Lzw() {}
 
@@ -45,6 +46,10 @@ string Lzw::int_to_bin(int n) {
 void Lzw::compress(string file) {
     ifstream in("inputs/"+file, ios::binary);
     if(not in.good()) throw invalid_argument("Error: file not found");
+    in.seekg(0, ios::end);
+    input_file_size = in.tellg();
+    in.seekg(0, ios::beg);
+
     ofstream out("outputs/"+file+".lzw", ios::binary);
 
     reset_dict();
@@ -72,6 +77,7 @@ void Lzw::compress(string file) {
 
         if((int)t.size()>=(1<<num_bits)) {
             if(num_bits>=max_bits) {
+                dictionary_resets++;
                 for(int j=0;j<8;j++) s.pop_back();
                 buf.push_back(t.find(s));
                 for(auto &ss: buf) 
@@ -98,13 +104,16 @@ void Lzw::compress(string file) {
     p.add_bits(t.find(s),num_bits-t.find(s).size());
     p.print(out, num_bits);
 
+
+    output_file_size = out.tellp();
+
     in.close();
     out.close();
 }
 
 void Lzw::decompress(string file) {
     ifstream in("outputs/"+file+".lzw", ios::binary);
-    ofstream out("inputs/"+file, ios::binary); // maybe change folder/file name
+    ofstream out("inputs/"+file, ios::binary);
     if(not in.good()) throw invalid_argument("Error: file not found");
 
     vector<string> buf;
@@ -147,3 +156,16 @@ void Lzw::decompress(string file) {
     in.close();
     out.close();
 }   
+
+void Lzw::print_stats(bool c, long long time_taken) {
+    if(c){
+        cout << "Input File Size: " << input_file_size << " bytes" << endl;
+        cout << "Time taken: " << time_taken << " ms" << endl;
+        cout << "Compressed File Size: " << output_file_size << " bytes" << endl;
+        cout << "Compression Ratio: " << 100.0-(100.0 * output_file_size / input_file_size) << "%" << endl;
+        cout << "Number of Dictionary Resets: " << dictionary_resets << endl;
+    } else{
+        cout << "Time taken: " << time_taken << " ms" << endl;
+        cout << "Number of Dictionary Resets: " << dictionary_resets << endl;
+    }
+}
