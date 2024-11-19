@@ -36,26 +36,40 @@ void Trie::insert(string s, string val){
 				cur = nodes[cur].r;
 			}
 		} else{
-			int new_par = create(nodes[cur].t.substr(0, j));
-			nodes[new_par].par = nodes[cur].par;
+			if(i == n){
+				if(nodes[cur].t[j] == '0'){
+					nodes[cur].l = create(nodes[cur].t.substr(j, m-j), nodes[cur].v);
+					nodes[nodes[cur].l].par = cur;
+				}
+				else{
+					nodes[cur].r = create(nodes[cur].t.substr(j, m-j), nodes[cur].v);
+					nodes[nodes[cur].r].par = cur;
+				}
 
-			if(nodes[cur].t[0] == '0') nodes[nodes[cur].par].l = new_par;
-			else nodes[nodes[cur].par].r = new_par;
-
-			nodes[cur].t = nodes[cur].t.substr(j, m-j);
-			nodes[cur].par = new_par;
-
-			if(s[i] == '0'){
-				nodes[new_par].l = create(s.substr(i, n-i));
-				nodes[new_par].r = cur;
-				cur = nodes[new_par].l;
+				nodes[cur].t = nodes[cur].t.substr(0, j);
+				nodes[cur].v = val, sz++;
 			} else{
-				nodes[new_par].r = create(s.substr(i, n-i));
-				nodes[new_par].l = cur;
-				cur = nodes[new_par].r;
-			}
+				int new_par = create(nodes[cur].t.substr(0, j));
+				nodes[new_par].par = nodes[cur].par;
 
-			nodes[cur].par = new_par;
+				if(nodes[cur].t[0] == '0') nodes[nodes[cur].par].l = new_par;
+				else nodes[nodes[cur].par].r = new_par;
+
+				nodes[cur].t = nodes[cur].t.substr(j, m-j);
+				nodes[cur].par = new_par;
+
+				if(s[i] == '0'){
+					nodes[new_par].l = create(s.substr(i, n-i));
+					nodes[new_par].r = cur;
+					cur = nodes[new_par].l;
+				} else{
+					nodes[new_par].r = create(s.substr(i, n-i));
+					nodes[new_par].l = cur;
+					cur = nodes[new_par].r;
+				}
+
+				nodes[cur].par = new_par;
+			}
 		}
 	}
 }

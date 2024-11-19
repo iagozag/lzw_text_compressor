@@ -16,7 +16,9 @@ class Trie {
 			int par;
 			bool end;
 
-			node(string _t = "", string _v = ""): t(_t), v(_v), l(-1), r(-1), end(false) {}
+			node(string _t = "", string _v = ""): t(_t), v(_v), l(-1), r(-1), end(false) {
+				if(_v != "") end = true;
+			}
 		};
 
 		vector<node> nodes;
