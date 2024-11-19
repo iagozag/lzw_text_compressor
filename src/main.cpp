@@ -1,31 +1,32 @@
 #include <iostream>
 #include "../include/Lzw.h"
-#include<map>
 
 using namespace std;
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define endl '\n'
 
-int main(int argc, char* argv[]){ _
-	if (argc < 2) {
-		cout << "How to use: ./main <file> [--max-bits <value> (12 by default)] [--stats (0 by default)]" << endl;
+int main(int argc, char* argv[]){
+	if (argc < 3) {
+		cout << "How to use: ./main <file> (--compress / --decompress) [--max-bits <value> (12 by default)] [--stats (false by default)] [--fixed (false by default)]" << endl;
 		exit(0);
 	}
 
-	string file = "inputs/";
+	string file = "";
 	file += argv[1];
 	int max_bits = 12; 
-	bool stats = 0;
+	bool comp = 1, stats = 0, fixed = 0;
 
 	for(int i = 2; i < argc; i++){
 		string arg = argv[i];
         if(arg == "--max-bits" and i+1 < argc) max_bits = atoi(argv[i+1]), i++;
+        else if(arg == "--decompress") comp = 0;
         else if(arg == "--stats") stats = 1;
+        else if(arg == "--fixed") fixed = 1;
     }
 
-	Lzw l(max_bits, stats);
-	l.compress(file);
+	Lzw l(max_bits, stats, fixed);
+	if(comp) l.compress(file);
+	else l.decompress(file);
 
     exit(0);
 }

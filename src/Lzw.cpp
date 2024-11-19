@@ -46,7 +46,7 @@ string Lzw::int_to_bin(int n) {
 void Lzw::compress(string file) {
     ifstream in("inputs/"+file, ios::binary);
     if(not in.good()) throw invalid_argument("Error: file not found");
-    ofstream out("inputs/"+file+".lzw", ios::binary);
+    ofstream out("outputs/"+file+".lzw", ios::binary);
 
     reset_dict();
     string s,sb;

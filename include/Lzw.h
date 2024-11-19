@@ -2,12 +2,10 @@
 #define LZW_H
 
 #include "Trie.h"
-#include <map>
 
 class Lzw {
     private:
         Trie t;
-        // map<string,string> t;
         int max_bits;
         int min_bits;
         int num_bits;
