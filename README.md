@@ -19,6 +19,16 @@ A implementação pode ser dividida, basicamente, em três partes (essa divisão
 
 ### Árvore de prefixo compacta (Trie)
 
+Para o funcionamento do algoritmo, é necessária o uso de uma estrutura de dados para representar um dicionário. Essa estrutura deve permitir operações de inserção e remoção de strings binárias, a verificação de se ela contém uma string de maneira eficiente, além de, caso positivo, verificar a qual valor este par é associado. Como o método LZW precisa de dois dicionários diferentes (um de sequências para inteiros na compressão, e outro de inteiros para sequências na descompressão), ambos os valores foram transformados em strings binárias, para que a mesma implementação do dicionário pudesse ser utilizada nos dois casos.
+
+Para isto, foi implementada uma árvore de prefixo compacta, também chamada de Trie compacta, pois esta estrutura permite as operações de maneira eficiente, além de economizar a memória utilizada. A versão implementada é a que utiliza um vetor que contém todos os nós, e cada nó contém o índice dos seus filhos para a esqueda e direita (apenas dois filhos, pois as strings são binárias). Esta implementação é mais eficiente do que criar, de fato, uma árvore, pois fazemos acessos mais eficientes na memória.
+
+A Trie implementada possui cinco funções principais:
+- uma função que apenas retorna o número de elementos inseridos
+- uma função que insere um par (chave, valor) na Trie, ou altera o valor associado à chave, caso esta já esteja presente na estrutura
+- uma função que deleta uma chave da Trie, caso tenha sido inserido
+- uma função que retorna o valor associado à uma chave dada, ou uma string vazia caso esta chave não pertença à estrutura
+- por fim, uma função que exclui todos os elementos armazenados (usada, principalmente, nas reinicializações do dicionário, que serão descritas posteriormente)
 
 ### Algoritmo LZW
 
@@ -47,7 +57,7 @@ Neste módulo temos, basicamente, funções com 3 objetivos:
 
 # Exemplos de compactação e descompactação
 
-Para mostrar o desempenho do algoritmo, serão exibitos, nesta página, quadro arquivos diferentes como exemplos, de diferentes formatos e tamanhos: um pequeno arquivo de texto com caracteres especiais, uma imagem no formato .bmp totalmente preta (para mostrar a eficiência do algoritmo em arquivos com muita redundância), uma outra imagem no formato .bmp, mas colorida, uma base de dados no formato .csv (que na verdade é apenas um texto) e, por fim, uma imagem no formato .png, para mostrar casos em que o algoritmo não é eficiente.
+Para mostrar o desempenho do algoritmo, serão exibitos, nesta página, quadro arquivos diferentes como exemplos, de diferentes formatos e tamanhos: um pequeno arquivo de texto com caracteres especiais, uma imagem no formato .bmp totalmente preta (para mostrar a eficiência do algoritmo em arquivos com muita redundância), uma outra imagem no formato .bmp, mas colorida, uma base de dados no formato .csv e, por fim, uma imagem no formato .png, para mostrar um caso em que o algoritmo não é eficiente. Todos os exemplos utilizarão a versão de tamanho variável do algoritmo, com o máximo de bits igual a 12.
 
 ### Exemplo 1: .txt com caracteres especiais
 
@@ -61,16 +71,40 @@ Primeiro, será testado um pequeno arquivo de texto com caracteres como emojis e
     ^^^^^^^^^^^
     😄😶👌🙃🧑‍💻🧌🐔🎖️🐓🌎🍰
 
-Este arquivo possui um tamanho de 225 bytes. Ao comprimir
+Este arquivo possui um tamanho de 225 bytes. Ao comprimir, obtemos um arquivo com 185 bytes, uma compressão de aproximadamente 17% (um valor baixo, mas explicável, pois a compressão se torna mais eficiente conforme o algoritmo for avançando). O objetivo desta compressão é mostrar, apenas, que caracteres especiais não são um problema para o algoritmo.
+(inserir mais estatísticas)
 
+### Exemplo 2: imagem totalmente preta no formato .bmp
 
+Agora, será mostrada uma especialidade do algoritmo: comprimir arquivos com grande repetições de padrôes. A imagem comprimida será a seguinte (na verdade, a abaixo é uma versão em .png, pois o formato .bmp não foi surpotado aqui) : 
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3187d7df-d55f-4ebf-a328-5c1fe4e28bb6" width="500">
+</p>
 
+Neste exemplo, a imagem original ocupa 257 KB de armazenamento, porém, o arquivo comprimido possui incríveis 977 bytes. Isso gera, uma taxa de compressão de mais de 99%! Claro, este não é um exemplo muito real, e foi citado apenas para mostrar a especialidade do algoritmo.
 
+### Exemplo 3:
 
+Agora, um exemplo mais real: uma outra imagem no formato .bmp, mas colorida (a versão abaixo também está em .png, mas a análise será sobre a .bmp):
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/bb85f945-496f-4d3b-90ea-83e4e8445c9a" width="500">
+</p>
 
+Essa imagem possui um tamanho de 2.74 MB, enquanto sua versão comprimida possui 1.88 MB. Isso representa uma taxa de compressão de aproximadamente 31%, um valor mais baixo por conta da grande variação de cores na mesma.
 
+### Exemplo 4:
+Mais um exemplo real, mas maior: uma base de dados obtida em uma página de dados do governo, no formato .csv (que é, na verdade, um arquivo de texto comum com separações, geralmente por vírgula). Por conta do tamanho do arquivo, ele não será exibido aqui.
 
+Este arquivo possui um tamanho de 46.3 MB no formato original, mas conseguimos o comprimir para ocupar apenas 19,9 MB, o que representa uma taxa de compressão de 57%. Conforme dito anteriormente, arquivos maiores e com mais repetições tendem a ser mais comprimidos, como é o caso deste exemplo em relação ao último.
 
+## Exemplo 5:
 
+Para finalizar, agora um exemplo em que o arquivo não é eficiente:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d78a2bf0-70c3-4c62-9938-ba89a1f6b3a6" width="500">
+</p>
+
+Esta imagem possui, originalmente, 2.56 MB. Porém, o arquivo "comprimido" possui o tamanho de 3,68 MB, que indica uma taxa de compressão de -43%. Nos casos em que o algoritmo não encontre grandes padrões no arquivo, isto pode ocorrer: o arquivo original ser menor que o compactado.
