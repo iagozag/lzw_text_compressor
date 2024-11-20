@@ -72,7 +72,6 @@ Primeiro, será testado um pequeno arquivo de texto com caracteres como emojis e
     😄😶👌🙃🧑‍💻🧌🐔🎖️🐓🌎🍰
 
 Este arquivo possui um tamanho de 225 bytes. Ao comprimir, obtemos um arquivo com 185 bytes, uma compressão de aproximadamente 17% (um valor baixo, mas explicável, pois a compressão se torna mais eficiente conforme o algoritmo for avançando). O objetivo desta compressão é mostrar, apenas, que caracteres especiais não são um problema para o algoritmo.
-(inserir mais estatísticas)
 
 ### Exemplo 2: imagem totalmente preta no formato .bmp
 
@@ -101,7 +100,7 @@ Este arquivo possui um tamanho de 46.3 MB no formato original, mas conseguimos o
 
 ## Exemplo 5:
 
-Para finalizar, agora um exemplo em que o arquivo não é eficiente:
+Para finalizar, agora um exemplo em que o arquivo não é eficiente: uma imagem no formato .png.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d78a2bf0-70c3-4c62-9938-ba89a1f6b3a6" width="500">
