@@ -83,7 +83,7 @@ Agora, será mostrada uma especialidade do algoritmo: comprimir arquivos com gra
 
 Neste exemplo, a imagem original ocupa 257 KB de armazenamento, porém, o arquivo comprimido possui incríveis 977 bytes. Isso gera, uma taxa de compressão de mais de 99%! Claro, este não é um exemplo muito real, e foi citado apenas para mostrar a especialidade do algoritmo.
 
-### Exemplo 3:
+### Exemplo 3: imagem colorida no formato .bmp
 
 Agora, um exemplo mais real: uma outra imagem no formato .bmp, mas colorida (a versão abaixo também está em .png, mas a análise será sobre a .bmp):
 
@@ -93,12 +93,12 @@ Agora, um exemplo mais real: uma outra imagem no formato .bmp, mas colorida (a v
 
 Essa imagem possui um tamanho de 2.74 MB, enquanto sua versão comprimida possui 1.88 MB. Isso representa uma taxa de compressão de aproximadamente 31%, um valor mais baixo por conta da grande variação de cores na mesma.
 
-### Exemplo 4:
+### Exemplo 4: base de dados
 Mais um exemplo real, mas maior: uma base de dados obtida em uma página de dados do governo, no formato .csv (que é, na verdade, um arquivo de texto comum com separações, geralmente por vírgula). Por conta do tamanho do arquivo, ele não será exibido aqui.
 
 Este arquivo possui um tamanho de 46.3 MB no formato original, mas conseguimos o comprimir para ocupar apenas 19,9 MB, o que representa uma taxa de compressão de 57%. Conforme dito anteriormente, arquivos maiores e com mais repetições tendem a ser mais comprimidos, como é o caso deste exemplo em relação ao último.
 
-## Exemplo 5:
+## Exemplo 5: imagem no formato .png
 
 Para finalizar, agora um exemplo em que o arquivo não é eficiente: uma imagem no formato .png.
 
