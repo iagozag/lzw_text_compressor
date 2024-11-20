@@ -11,7 +11,14 @@ class Print {
         vector<bool> buf;
 
     public:
+        /*
+         * @brief Constructs Print class
+         */
         Print();
+    
+        /*
+         * @brief Destroys Print class
+         */
         ~Print();
 
         /*
@@ -30,7 +37,9 @@ class Print {
         void print(ofstream &f);
 };
 
-
+/*
+* @brief Reads the compressed file as written by the print method
+*/
 void Read(ifstream &f, vector<string> &codes);
 
 #endif

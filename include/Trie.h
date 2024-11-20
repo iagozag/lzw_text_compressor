@@ -8,6 +8,9 @@ using namespace std;
 
 class Trie {
 	private:
+	    /*
+         * @brief Structure representing a node in the Trie
+         */
 		struct node{
 			string t;
 			string v;
@@ -25,16 +28,46 @@ class Trie {
 		int sz;
 		int idx;
 
-		int create(string, string);
+        /*
+         * @brief Creates a new node in the Trie with text and value empty by default
+         */
+		int create(string t, string v);
 
 	public:
-		Trie();
-		~Trie();
-		int size();
-		void insert(string, string);
-		void erase(string);
-		string find(string);
-		void clear();
+        /*
+         * @brief Constructs the Trie
+         */
+        Trie();
+
+        /*
+         * @brief Destroys the Trie
+         */
+        ~Trie();
+
+        /*
+         * @brief Returns the size of the Trie
+         */
+        int size();
+
+        /*
+         * @brief Inserts a key-value pair into the Trie
+         */
+        void insert(string key, string value);
+
+        /*
+         * @brief Removes a key from the Trie
+         */
+        void erase(string key);
+
+        /*
+         * @brief Finds the value associated with a key
+         */
+        string find(string key);
+
+        /*
+         * @brief Clears all nodes in the Trie
+         */
+        void clear();
 };
 
 #endif

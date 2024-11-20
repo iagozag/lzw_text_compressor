@@ -168,10 +168,12 @@ void Lzw::print_stats(bool compress, long long time_taken, string stats_file_pat
         stats_file << "Input File Size: " << input_file_size << " bytes" << endl;
         stats_file << "Compressed File Size: " << output_file_size << " bytes" << endl;
         stats_file << "Compression Ratio: " << 100.0 - (100.0 * output_file_size / input_file_size) << "%" << endl;
+        stats_file << "Final dictionary size: " << t.size() << endl;
         stats_file << "Number of Dictionary Resets: " << dictionary_resets << endl;
     } else {
         stats_file << "DECOMPRESSION STATISTICS: " << endl;
         stats_file << "Time taken: " << time_taken << " ms" << endl;
+        stats_file << "Final dictionary size: " << t.size() << endl;
         stats_file << "Number of Dictionary Resets: " << dictionary_resets << endl;
     }
 

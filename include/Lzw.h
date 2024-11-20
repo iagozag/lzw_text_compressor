@@ -9,25 +9,39 @@
 class Lzw {
     private:
         Trie t;
+
         int max_bits;
         int min_bits;
         int num_bits;
+
         long input_file_size;
         long output_file_size;
         int dictionary_resets;
 		bool stats;
+
         bool fixed;
 
         /*
-         * @brief Resets the dictionary
+         * @brief Resets the dictionary when compressing
          */
         void reset_dict();
 
+        /*
+         * @brief Resets the dictionary when decompressing
+         */
         void reset_dict2();
 
     public:
+        /*
+         * @brief Constructs LZW class
+         */
         Lzw(int _max_bits=12, bool stats = false, bool _fixed = false);
+
+        /*
+         * @brief Destroys LZW class
+         */
         ~Lzw();
+
         /*
          * @brief Returns a binary string that represents the binary representation of c
          */
@@ -48,9 +62,10 @@ class Lzw {
          */
         void decompress(string file);
 
-        void print_stats(bool, long long, string);
+        /*
+         * @brief Print compression / decompression statistics to a txt file in the stats folder
+         */
+        void print_stats(bool compressed, long long time_taken, string stats_file_path);
 };
-
-
 
 #endif
