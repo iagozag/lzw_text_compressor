@@ -125,7 +125,7 @@ Mais um exemplo real, mas maior: uma base de dados obtida em uma página de dado
 
 Este arquivo possui um tamanho de 46.3 MB no formato original, mas conseguimos o comprimir para ocupar apenas 19,9 MB, o que representa uma taxa de compressão de 57%. Conforme dito anteriormente, arquivos maiores e com mais repetições tendem a ser mais comprimidos, como é o caso deste exemplo em relação ao último. Por conta do arquivo original ser muito maior que os demais testes, o tempo de execução do mesmo foi de 2 minutos e 39 segundos.
 
-## Exemplo 5: imagem no formato .png
+### Exemplo 5: imagem no formato .png
 
 Para finalizar, agora um exemplo em que o arquivo não é eficiente: uma imagem no formato .png.
 
