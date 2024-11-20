@@ -112,8 +112,8 @@ void Lzw::compress(string file) {
 }
 
 void Lzw::decompress(string file) {
-    ifstream in("outputs/"+file+".lzw", ios::binary);
-    ofstream out("inputs/"+file, ios::binary);
+    ifstream in("outputs/"+file, ios::binary);
+    ofstream out("inputs/"+file.substr(0, file.size()-4), ios::binary);
     if(not in.good()) throw invalid_argument("Error: file not found");
 
     vector<string> buf;
