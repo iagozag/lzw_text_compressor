@@ -10,7 +10,28 @@ Integrantes do grupo:
 - Iago Zagnoli Albergaria
 - Manuel Junio Ferraz Cardoso
 
-Site para execução online do programa: https://lzw-compress.streamlit.app/
+# Instruções para compilação e execução
+
+Caso queira compilar e executar o programa localmente, basta clonar o repositório. Após isso, na pasta /lzw_text_compressor, no terminal, digite os comandos abaixo:
+
+    make
+    ./main <file> (--compress / --decompress) [--max-bits <value> (12 by default)] [--stats (false by default)] [--fixed (false by default)]
+
+O comando make é utilizado para a compilação, portanto, só é preciso ser usado uma vez. Já o segundo serve para executar de fato o programa. Neste último, devem ser dados parâmetros adicionais:
+- <file\> : arquivo que será comprimido ou descomprimido. No primeiro caso, ele deve estar na pasta inputs, e o resultado estará na pasta outputs. No segundo caso, o arquivo deve estar na pasta outputs (note a terminação .lzw para arquivos comprimidos), e o resultado será armazenado na pasta inputs.
+- (--compress / --decompress) : indicação se o objetivo é comprimir ou descomprimir um arquivo
+- [--max-bits <value> (12 by default)\] : tamanho máximo de bits usado pelos códigos no dicionário (opcional, 12 caso não informado)
+- [--stats (false by default)\] : opção para visualização de estatísticas sobre a execução do programa (opcional, falso caso não informado)
+- [--fixed (false by default)\] : opção para indicar se o algoritmo será utilizado na versão fixa ou variável (opcional, variável caso não informado)
+
+Seguem dois exemplos de comandos de execução, um para compressão e outro para descompressão:
+    
+    ./main input1.txt --compress --max-bits 16 --fixed --stats
+    ./main input1.txt.lzw --decompress --stats
+    
+Há também uma versão para execução online do programa, disponível no link https://lzw-compress.streamlit.app/
+
+Na página, será possível enviar um arquivo para ser comprimido ou descomprimido conforme a opção selecionada, e fazer o download do arquivo resultante. Há também botões para selecionar as opções desejadas na execução do programa, como o tamanho máximo e a visualização de estatísticas.
 
 # Descrição dos métodos e implementações
 
@@ -116,21 +137,19 @@ Esta imagem possui, originalmente, 2.56 MB. Porém, o arquivo "comprimido" possu
 
 Esta última imagem de exemplo teve a sua compressão concluída em, aproximadamente, 16 segundos.
 
-# Instruções para compilação e execução
+## Estatísticas adicionais
 
-Caso queira compilar e executar o programa localmente, basta clonar o repositório. Após isso, na pasta /lzw_text_compressor, no terminal, digite os comandos abaixo:
+Foram feitos alguns gráficos pra mostrar a performance do algoritmo para diversos outros arquivos.
 
-    make
-    ./main <file> (--compress / --decompress) [--max-bits <value> (12 by default)] [--stats (false by default)] [--fixed (false by default)]
+### Taxa de compressão para diversos arquivos
 
-O comando make é utilizado para a compilação, portanto, só é preciso ser usado uma vez. Já o segundo serve para executar de fato o programa. Neste último, devem ser dados parâmetros adicionais:
-- <file\> : arquivo que será comprimido ou descomprimido. No primeiro caso, ele deve estar na pasta inputs, e o resultado estará na pasta outputs. No segundo caso, o arquivo deve estar na pasta outputs (note a terminação .lzw para arquivos comprimidos), e o resultado será armazenado na pasta inputs.
-- (--compress / --decompress) : indicação se o objetivo é comprimir ou descomprimir um arquivo
-- [--max-bits <value> (12 by default)\] : tamanho máximo de bits usado pelos códigos no dicionário (opcional, 12 caso não informado)
-- [--stats (false by default)\] : opção para visualização de estatísticas sobre a execução do programa (opcional, falso caso não informado)
-- [--fixed (false by default)\] : opção para indicar se o algoritmo será utilizado na versão fixa ou variável (opcional, variável caso não informado)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d3823559-47ef-4a17-833a-de94ab59664c" width="500">
+</p>
+Neste primeiro gráfixo mostra a variação da taxa de compressão para diversos arquivos diferentes. O gráfico mostra que o algoritmo não possui uma taxa fixa de compressão, e que esta taxa depende muito da estrutura do arquivo.
 
-Há também uma versão para execução online do programa, disponível no link https://lzw-compress.streamlit.app/
-
-Na página, será possível enviar um arquivo para ser comprimido ou descomprimido conforme a opção selecionada, e fazer o download do arquivo resultante. Há também botões para selecionar as opções desejadas na execução do programa, como o tamanho máximo e a visualização de estatísticas.
-
+### Tamanho de arquivo X tempo de execução
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/74dc012c-d74d-4652-80f3-011da32d198b" width="500">
+</p>
+Neste segundo gráfico, são feitas comparações entre o tamanho de arquivos (eixo x) e o tempo necessário para completar a compressão. Vemos que, apesar de não ser muito padronizado, de fato arquivos maiores tendem a precisar de mais tempo para serem comprimidos, como é esperado.
