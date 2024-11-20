@@ -124,7 +124,7 @@ Caso queira compilar e executar o programa localmente, basta clonar o repositór
     ./main <file> (--compress / --decompress) [--max-bits <value> (12 by default)] [--stats (false by default)] [--fixed (false by default)]
 
 O comando make é utilizado para a compilação, portanto, só é preciso ser usado uma vez. Já o segundo serve para executar de fato o programa. Neste último, devem ser dados parâmetros adicionais:
-- <file> : arquivo que será comprimido ou descomprimido. No primeiro caso, ele deve estar na pasta inputs, e o resultado estará na pasta outputs. No segundo caso, o arquivo deve estar na pasta outputs (note a terminação .lzw para arquivos comprimidos), e o resultado será armazenado na pasta inputs.
+- <file\> : arquivo que será comprimido ou descomprimido. No primeiro caso, ele deve estar na pasta inputs, e o resultado estará na pasta outputs. No segundo caso, o arquivo deve estar na pasta outputs (note a terminação .lzw para arquivos comprimidos), e o resultado será armazenado na pasta inputs.
 - (--compress / --decompress) : indicação se o objetivo é comprimir ou descomprimir um arquivo
 - [--max-bits <value> (12 by default)\] : tamanho máximo de bits usado pelos códigos no dicionário (opcional, 12 caso não informado)
 - [--stats (false by default)\] : opção para visualização de estatísticas sobre a execução do programa (opcional, falso caso não informado)
